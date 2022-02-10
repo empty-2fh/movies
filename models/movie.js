@@ -62,11 +62,11 @@ const MovieSchema = new Schema(
         [
             
             {
-
+                
                 type : Schema.Types.ObjectId,
-                ref : 'User'
+                ref : 'Movie'
 
-            }   
+            }
         
         ],
 
@@ -80,5 +80,15 @@ const MovieSchema = new Schema(
         }
 
     } );
+
+MovieSchema.methods.toJSON = function()
+
+{
+
+    const { __v, availability, ...data } = this.toObject();
+
+    return { ...data, total_likes : data.likes.length };
+
+}
 
 module.exports = model( 'Movie', MovieSchema );

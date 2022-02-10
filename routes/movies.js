@@ -4,12 +4,13 @@ const
 
 { 
     
-    createMovie, 
-    readMovies, 
+    createMovie,
+    deleteMovie,
+    likeMovie,
+    readMovies,
     readMovie,
-    updateMovie,
     removeMovie,
-    deleteMovie 
+    updateMovie,
 
 } = require( '../controllers/movies' );
 
@@ -27,7 +28,7 @@ router.get( '/list/', readMovies );
 
 // Obtener detalles de una pelicula - GET - Publico
 
-router.get( '/list/:id', readMovie );
+router.get( '/details/:id', readMovie );
 
 // Actualizar - PUT - Solamente administradores
 
@@ -40,5 +41,11 @@ router.put( '/remove/:id', removeMovie );
 // Eliminar - DELETE - Solamente administradores
 
 router.delete( '/delete/:id', deleteMovie );
+
+// Me gusta - PUT - Usuarios autenticados
+
+router.put( '/like/:id', likeMovie );
+
+// Buscar por nombre
 
 module.exports = router;
