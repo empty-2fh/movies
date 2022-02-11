@@ -1,4 +1,3 @@
-const { ObjectId } = require( 'mongoose' ).Types;
 const { request, response } = require( 'express' );
 
 const Movie = require( '../models/movie' );
@@ -50,8 +49,8 @@ const readMovies = async ( req = request, res = response ) =>
             Movie.find( query )
                        .sort( sort ) 
                        .select( '-rental_price -sale_price -stock' )
-                       .skip( Number( skip ) )
-                       .limit( Number( limit ) ),
+                       .skip( ( Number( skip ) >= 0 ) ? skip : 0 )
+                       .limit( ( Number( limit ) >= 0 ) ? limit : 0  ),
 
             Movie.countDocuments( query )
 
@@ -67,8 +66,7 @@ const readMovie = async ( req = request, res = response ) =>
 
     const { id } = req.params;
 
-    const movie = await Movie.findById( id )
-                             .select();
+    const movie = await Movie.findById( id );
 
     res.json( { movie } )
 

@@ -85,7 +85,7 @@ MovieSchema.methods.toJSON = function()
 
 {
 
-    const { __v, availability, ...data } = this.toObject();
+    const { __v, ...data } = this.toObject();
 
     return { ...data, total_likes : data.likes.length };
 
