@@ -7,10 +7,13 @@ const
     createMovie,
     deleteMovie,
     likeMovie,
+    purchaseMovie,
     readMovies,
     readMovie,
     removeMovie,
+    rentMovie,
     updateMovie,
+    finishRentMovie,
 
 } = require( '../controllers/movies' );
 
@@ -46,6 +49,16 @@ router.delete( '/delete/:id', deleteMovie );
 
 router.put( '/like/:id', likeMovie );
 
-// Buscar por nombre
+// Comprar - POST - Usuarios autenticados
+
+router.post( '/purchase/:id', purchaseMovie );
+
+// Rentar - POST - Usuarios autenticados
+
+router.post( '/rent/:id', rentMovie );
+
+// Finalizar renta - POST - Usuarios autenticados
+
+router.post( '/rent/finish/:id', finishRentMovie );
 
 module.exports = router;

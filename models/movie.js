@@ -39,6 +39,15 @@ const MovieSchema = new Schema(
         
         },
 
+        rental_days :
+        
+        {
+
+            type : Number,
+            default : 3
+
+        },
+
         rental_price : 
         
         {

@@ -82,7 +82,7 @@ const updateUser = async ( req = request, res = response ) =>
     
     const { name, email, password, role, image } = req.body;
 
-    let query = {};
+    const query = {};
 
     if ( name ) query.name = name.toUpperCase();
     if ( email ) query.email = email;
@@ -122,7 +122,7 @@ const removeUser = async ( req = request, res = response ) =>
 
     const user = await User.findByIdAndUpdate( id, query, { new : true } );
 
-    res.json( { message : "Usuario removido con exito", user } );
+    res.json( { message : "Usuario removido con exito!", user } );
 
 }
 
@@ -134,7 +134,7 @@ const deleteUser = async ( req = request, res = response ) =>
 
     const user = await User.findByIdAndDelete( id );
 
-    res.json( { message : "Usuario eliminado con exito", user } );
+    res.json( { message : "Usuario eliminado con exito!", user } );
 
 }
 

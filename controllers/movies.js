@@ -1,7 +1,11 @@
 const { request, response } = require( 'express' );
 
 const Movie = require( '../models/movie' );
+const Purchase = require( '../models/purchase' );
+const Rent = require( '../models/rent' );
+
 const { newUpdateLog } = require( '../helpers/save-update-log' );
+const { init } = require('../models/rent');
 
 const createMovie = async ( req = request, res = response ) =>
 
@@ -26,7 +30,7 @@ const createMovie = async ( req = request, res = response ) =>
 
     await movie.save();
 
-    res.json( { message : "Pelicula creada con exito", movie } );
+    res.json( { message : "Pelicula creada con exito!", movie } );
 
 }
 
@@ -104,7 +108,7 @@ const updateMovie = async ( req = request, res = response ) =>
 
     await newUpdateLog( id, old_data, new_data );
 
-    res.json( { message : "Pelicula actualizada con exito", movie } );
+    res.json( { message : "Pelicula actualizada con exito!", movie } );
 
 }
 
@@ -116,7 +120,7 @@ const removeMovie = async ( req = request, res = response ) =>
 
     const movie = await Movie.findByIdAndUpdate( id, { availability : false }, { new : true } );
 
-    res.json( { message : "Pelicula removida con exito", movie } );
+    res.json( { message : "Pelicula removida con exito!", movie } );
 
 }
 
@@ -128,7 +132,7 @@ const deleteMovie = async ( req = request, res = response ) =>
 
     const movie = await Movie.findByIdAndDelete( id );
 
-    res.json( { message : "Pelicula eliminada con exito", movie } );
+    res.json( { message : "Pelicula eliminada con exito!", movie } );
 
 }
 
@@ -139,7 +143,7 @@ const likeMovie = async ( req = request, res = response ) =>
     const { id } = req.params;
     const { user_id } = req.body;
 
-    let { likes } = await Movie.findById( id );
+    const { likes } = await Movie.findById( id );
     let message = "Esta pelicula ahora te gusta!";
 
     if ( likes.includes( user_id ) ) 
@@ -165,15 +169,125 @@ const likeMovie = async ( req = request, res = response ) =>
 
 }
 
+const purchaseMovie = async ( req = request, res = response ) =>
+
+{
+
+    const { id } = req.params;
+    const { units = 1 } = req.body;
+    const user_id = '6205ee3e614694b4e25bf61c';
+
+    const { sale_price } = await Movie.findById( id );
+
+    const data = 
+    
+    {
+
+        user : user_id,
+        movie : id,
+        unit_price : sale_price,
+        units,
+        purchase_price : sale_price * units
+
+    };
+
+    const purchase = new Purchase( data );
+
+    await purchase.save();
+
+    res.json( { message : "La compra fue exitosa!", purchase } );
+}
+
+const rentMovie = async ( req = request, res = response ) =>
+
+{
+
+    const { id } = req.params;
+    const user_id = '6205ee3e614694b4e25bf61c';
+
+    const { rental_days, rental_price } = await Movie.findById( id );
+
+    const init_date = new Date()
+    let final_date = new Date();
+
+    final_date.setDate( init_date.getDate() + rental_days )
+
+    const data = 
+    
+    {
+
+        user : user_id,
+        movie : id,
+        rental_price,
+        initial_rental_date : init_date.toISOString(),
+        final_rental_date : final_date.toISOString(),
+        penalization_per_delay_day : rental_price * 0.05
+    
+    };
+
+    const rent = new Rent( data );
+
+    await rent.save();
+
+    res.json( { message : "La renta esta en curso!", rent } );
+
+}
+
+const finishRentMovie = async ( req = request, res = response ) =>
+
+{
+
+    const { id } = req.params;
+    const user_id = '6205ee3e614694b4e25bf61c';
+
+    const rent_data = { movie : id, user : user_id };
+
+    const 
+    
+    { 
+        
+        _id : rent_id,
+        rental_price, 
+        final_rental_date, 
+        penalization_per_delay_day 
+    
+    } = await Rent.findOne( rent_data );
+
+    const returned_date = new Date();
+
+    const dif_days = returned_date.getDate() - final_rental_date.getDate();
+
+    const delay_days = ( ( dif_days ) < 0 ) ? 0 : dif_days;
+
+    const data = 
+    
+    {
+
+        returned_date : returned_date.toISOString(),
+        delay_days,
+        total_rental_price : rental_price + ( penalization_per_delay_day * delay_days ),
+        returned : true
+
+    }
+
+    const finished_rent = await Rent.findByIdAndUpdate( rent_id, data, { new : true } );
+
+    res.json( { message : "La renta ha finalizado!" , finished_rent } );
+
+}
+
 module.exports = 
 
 {
 
     createMovie,
     deleteMovie,
+    finishRentMovie,
     likeMovie,
+    purchaseMovie,
     readMovies,
     readMovie,
     removeMovie,
+    rentMovie,
     updateMovie,
 }

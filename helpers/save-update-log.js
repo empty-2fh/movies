@@ -20,8 +20,6 @@ const newUpdateLog = async ( movie, old_data, new_data ) =>
 
     await log.save();
 
-    console.log( 'xd' );
-
 }
 
 module.exports = { newUpdateLog }

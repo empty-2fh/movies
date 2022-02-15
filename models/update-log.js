@@ -42,4 +42,14 @@ const UpdateLogSchema = new Schema(
 
     } );
 
+UpdateLogSchema.methods.toJSON = function()
+
+{
+
+    const { __v, ...data } = this.toObject();
+
+    return data;
+
+}
+
 module.exports = model( 'Update_Log', UpdateLogSchema );

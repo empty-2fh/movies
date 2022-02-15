@@ -13,7 +13,7 @@ const createRole = async ( req = request, res = response ) =>
 
     await new_role.save();
 
-    res.json( { message : 'Role creado con exito', new_role } );
+    res.json( { message : 'Role creado con exito!', new_role } );
 
 }
 
@@ -65,7 +65,7 @@ const removeRole = async ( req = request, res = response ) =>
 
     const role = await Role.findByIdAndUpdate( id, query, { new : true } );
 
-    res.json( { message : "El rol ha sido removido con exito !", role } )
+    res.json( { message : "El rol ha sido removido con exito!", role } )
 
 }
 
@@ -92,7 +92,7 @@ const deleteRole = async ( req = request, res = response ) =>
 
     const role = await Role.findByIdAndDelete( id );
 
-    res.json( { message : "El rol ha sido eliminado con exito", role } );
+    res.json( { message : "El rol ha sido eliminado con exito!", role } );
 
 }
 
