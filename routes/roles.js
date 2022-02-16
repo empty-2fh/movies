@@ -13,19 +13,80 @@ const
 
 } = require( '../controllers/roles' );
 
+const { isAdmin, validateData, validateJwt } = require( '../middlewares/' );
+
 const router = Router();
 
-router.get( '/list/', readRoles );
+router.get( '/list/', 
 
-router.get( '/details/:id', readRole )
+    [
 
-router.post( '/create/', createRole );
+        validateJwt,
+        isAdmin,
+        validateData
 
-router.put( '/update/:id', updateRole );
+    ],
 
-router.put( '/remove/:id', removeRole );
+    readRoles );
 
-router.delete( '/delete/:id', deleteRole )
+router.get( '/details/:id', 
 
+    [
+
+        validateJwt,
+        isAdmin,
+        validateData
+
+    ],
+
+    readRole );
+
+router.post( '/create/', 
+
+    [
+
+        validateJwt,
+        isAdmin,
+        validateData
+
+    ],
+
+    createRole );
+
+router.put( '/update/:id', 
+
+    [
+
+        validateJwt,
+        isAdmin,
+        validateData
+
+    ],
+
+    updateRole );
+
+router.put( '/remove/:id', 
+
+    [
+
+        validateJwt,
+        isAdmin,
+        validateData
+
+    ],
+
+    removeRole );
+
+router.delete( '/delete/:id',
+
+    [
+
+        validateJwt,
+        isAdmin,
+        validateData
+
+    ],
+
+    deleteRole );
 
 module.exports = router;

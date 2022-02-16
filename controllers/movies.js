@@ -4,8 +4,7 @@ const Movie = require( '../models/movie' );
 const Purchase = require( '../models/purchase' );
 const Rent = require( '../models/rent' );
 
-const { newUpdateLog } = require( '../helpers/save-update-log' );
-const { init } = require('../models/rent');
+const { generateUpdateLog } = require( '../helpers/' );
 
 const createMovie = async ( req = request, res = response ) =>
 
@@ -106,7 +105,7 @@ const updateMovie = async ( req = request, res = response ) =>
 
     const movie = await Movie.findByIdAndUpdate( id, data, { new : true } );
 
-    await newUpdateLog( id, old_data, new_data );
+    await generateUpdateLog( id, old_data, new_data );
 
     res.json( { message : "Pelicula actualizada con exito!", movie } );
 

@@ -24,6 +24,7 @@ class Server
         
         {
 
+            auth : '/auth',
             movies : '/api/movies',
             roles  : '/api/roles',
             users  : '/api/users'
@@ -74,6 +75,7 @@ class Server
     
     {
 
+        this.app.use( this.endpoints.auth, require( '../routes/auth' ) );
         this.app.use( this.endpoints.movies, require( '../routes/movies' ) );
         this.app.use( this.endpoints.roles, require( '../routes/roles' ) );
         this.app.use( this.endpoints.users, require( '../routes/users' ) );

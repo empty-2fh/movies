@@ -13,18 +13,80 @@ const
 
 } = require( '../controllers/users' );
 
+const { isAdmin, validateData, validateJwt } = require( '../middlewares/' );
+
 const router = Router();
 
-router.get( '/list/', readUsers );
+router.get( '/list/', 
 
-router.get( '/details/:id', readUser );
+    [
 
-router.post( '/create/', createUser );
+        validateJwt,
+        isAdmin,
+        validateData
 
-router.put( '/update/:id', updateUser );
+    ],
 
-router.put( '/remove/:id', removeUser );
+    readUsers );
 
-router.delete( '/delete/:id', deleteUser );
+router.get( '/details/:id', 
+
+    [
+
+        validateJwt,
+        isAdmin,
+        validateData
+
+    ],
+
+    readUser );
+
+router.post( '/create/',
+    
+    [
+
+        validateJwt,
+        isAdmin,
+        validateData
+
+    ],
+
+    createUser );
+
+router.put( '/update/:id',
+
+    [
+
+        validateJwt,
+        isAdmin,
+        validateData
+
+    ],
+
+    updateUser );
+
+router.put( '/remove/:id', 
+
+    [
+
+        validateJwt,
+        isAdmin,
+        validateData
+
+    ],
+
+    removeUser );
+
+router.delete( '/delete/:id', 
+
+    [
+
+        validateJwt,
+        isAdmin,
+        validateData
+
+    ],
+
+    deleteUser );
 
 module.exports = router;

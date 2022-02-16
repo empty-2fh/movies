@@ -1,6 +1,6 @@
 const UpdateLog = require( '../models/update-log' );
 
-const newUpdateLog = async ( movie, old_data, new_data ) =>
+const generateUpdateLog = async ( movie, old_data, new_data ) =>
 
 {
 
@@ -22,4 +22,4 @@ const newUpdateLog = async ( movie, old_data, new_data ) =>
 
 }
 
-module.exports = { newUpdateLog }
+module.exports = { generateUpdateLog }
